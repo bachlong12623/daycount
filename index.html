@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#3155e7">
+  <meta name="description" content="99 ngày đếm ngược tới ngày giải phóng khỏi deadline, cuộc họp và những tin nhắn 'nhờ chút nhé'.">
+  <title>99 ngày nữa, bye việc!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Bungee&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #3155e7;
+      --sky: #bfe8ff;
+      --yellow: #ffd84d;
+      --coral: #ff766f;
+      --paper: #fffdf7;
+      --ink: #24213a;
+      --mint: #8fe3c0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background: var(--blue);
+      font-family: "Be Vietnam Pro", sans-serif;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    button:focus-visible {
+      outline: 4px solid var(--paper);
+      outline-offset: 5px;
+    }
+
+    .page {
+      position: relative;
+      isolation: isolate;
+      min-height: 100svh;
+      overflow: hidden;
+      padding: 26px clamp(18px, 4vw, 64px) 30px;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      z-index: -2;
+      width: 420px;
+      height: 420px;
+      left: -190px;
+      bottom: -180px;
+      border: 56px solid var(--sky);
+      border-radius: 50%;
+      opacity: .35;
+    }
+
+    .page::after {
+      content: "";
+      position: absolute;
+      z-index: -2;
+      width: 280px;
+      height: 100px;
+      right: -70px;
+      top: 110px;
+      background: var(--yellow);
+      transform: rotate(-18deg);
+      opacity: .95;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1240px;
+      margin: 0 auto;
+      color: var(--paper);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -.6px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 39px;
+      height: 39px;
+      place-items: center;
+      color: var(--ink);
+      background: var(--yellow);
+      border: 2px solid var(--ink);
+      border-radius: 50% 50% 45% 55%;
+      box-shadow: 3px 3px 0 var(--ink);
+      transform: rotate(-8deg);
+    }
+
+    .brand-mark svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .timezone {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .timezone::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      background: var(--mint);
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+    }
+
+    .layout {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
+      gap: clamp(40px, 7vw, 100px);
+      align-items: center;
+      max-width: 1180px;
+      min-height: calc(100svh - 150px);
+      margin: 0 auto;
+      padding: 48px 0 38px;
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 17px 8px;
+      padding: 8px 14px;
+      color: var(--ink);
+      background: var(--mint);
+      border: 2px solid var(--ink);
+      border-radius: 7px;
+      box-shadow: 4px 4px 0 var(--ink);
+      font-size: clamp(12px, 1.4vw, 15px);
+      font-weight: 800;
+      transform: rotate(-2deg);
+    }
+
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      color: var(--paper);
+      font-family: "Bungee", sans-serif;
+      font-size: clamp(43px, 6vw, 86px);
+      font-weight: 400;
+      line-height: .98;
+      letter-spacing: -2px;
+      text-wrap: balance;
+    }
+
+    h1 .yellow {
+      color: var(--yellow);
+    }
+
+    .intro {
+      max-width: 540px;
+      margin: 24px 0 30px;
+      color: var(--paper);
+      font-size: clamp(15px, 1.6vw, 18px);
+      font-weight: 500;
+      line-height: 1.65;
+    }
+
+    .calendar-wrap {
+      position: relative;
+      width: min(100%, 600px);
+      padding: 0 16px 16px 0;
+    }
+
+    .calendar {
+      position: relative;
+      overflow: hidden;
+      background: var(--paper);
+      border: 3px solid var(--ink);
+      border-radius: 18px 18px 9px 9px;
+      box-shadow: 13px 13px 0 var(--ink);
+    }
+
+    .calendar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 23px;
+      color: var(--ink);
+      background: var(--coral);
+      border-bottom: 3px solid var(--ink);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .rings {
+      display: flex;
+      gap: 9px;
+    }
+
+    .rings i {
+      display: block;
+      width: 12px;
+      height: 12px;
+      background: var(--yellow);
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+    }
+
+    .calendar-body {
+      padding: clamp(20px, 4vw, 35px) clamp(18px, 4vw, 38px) 24px;
+      text-align: center;
+    }
+
+    .day-number {
+      margin: -10px 0 -18px;
+      color: var(--blue);
+      font-family: "Bungee", sans-serif;
+      font-size: clamp(125px, 19vw, 230px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -12px;
+      transform: translateX(-5px);
+    }
+
+    .day-label {
+      margin: 0;
+      font-size: clamp(20px, 3vw, 30px);
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    .sub-label {
+      margin: 5px 0 22px;
+      color: #666078;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding-top: 18px;
+      border-top: 2px dashed #b9b4bd;
+    }
+
+    .time-unit {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .time-unit strong {
+      font-size: clamp(21px, 3.5vw, 32px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .time-unit span {
+      color: #6e687c;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .progress-track {
+      height: 12px;
+      margin-top: 19px;
+      overflow: hidden;
+      background: #e8e3dc;
+      border: 2px solid var(--ink);
+      border-radius: 20px;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: var(--mint);
+      border-right: 2px solid var(--ink);
+      transition: width .5s ease;
+    }
+
+    .release-date {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 11px 2px 0;
+      color: #6e687c;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .release-date strong {
+      color: var(--ink);
+    }
+
+    .side {
+      position: relative;
+      z-index: 2;
+      padding-top: 40px;
+    }
+
+    .quote-paper {
+      position: relative;
+      padding: 40px 30px 30px;
+      background: var(--yellow);
+      border: 3px solid var(--ink);
+      box-shadow: 10px 10px 0 var(--ink);
+      transform: rotate(3deg);
+    }
+
+    .quote-paper::before {
+      content: "";
+      position: absolute;
+      width: 96px;
+      height: 28px;
+      left: 50%;
+      top: -16px;
+      background: rgba(255, 253, 247, .78);
+      border: 1px solid rgba(36, 33, 58, .18);
+      transform: translateX(-50%) rotate(-4deg);
+    }
+
+    .quote-mark {
+      position: absolute;
+      top: 18px;
+      left: 23px;
+      color: var(--coral);
+      font-family: Georgia, serif;
+      font-size: 76px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    blockquote {
+      min-height: 145px;
+      margin: 25px 0 24px;
+      font-size: clamp(20px, 2.2vw, 28px);
+      font-weight: 900;
+      line-height: 1.42;
+      letter-spacing: -.8px;
+    }
+
+    .quote-caption {
+      margin: 0 0 25px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .quote-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      width: 100%;
+      min-height: 51px;
+      padding: 12px 17px;
+      color: var(--paper);
+      background: var(--blue);
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      box-shadow: 4px 4px 0 var(--ink);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .quote-button:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .quote-button:active {
+      transform: translate(4px, 4px);
+      box-shadow: none;
+    }
+
+    .quote-button svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .tiny-note {
+      position: relative;
+      width: 88%;
+      margin: 35px auto 0;
+      padding: 15px 18px;
+      color: var(--ink);
+      background: var(--sky);
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.55;
+      text-align: center;
+      transform: rotate(-3deg);
+    }
+
+    .doodle {
+      position: absolute;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .doodle-star {
+      width: 62px;
+      right: 3%;
+      top: 20%;
+      color: var(--yellow);
+      transform: rotate(12deg);
+    }
+
+    .doodle-plane {
+      width: 112px;
+      left: 44%;
+      bottom: 5%;
+      color: var(--paper);
+      transform: rotate(-8deg);
+      opacity: .9;
+    }
+
+    .footer {
+      position: relative;
+      z-index: 2;
+      max-width: 1180px;
+      margin: 0 auto;
+      color: var(--paper);
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      opacity: .85;
+    }
+
+    .confetti {
+      position: fixed;
+      z-index: 20;
+      width: 10px;
+      height: 16px;
+      top: var(--y);
+      left: var(--x);
+      background: var(--color);
+      border: 1px solid var(--ink);
+      pointer-events: none;
+      animation: pop 850ms cubic-bezier(.1, .7, .4, 1) forwards;
+    }
+
+    @keyframes pop {
+      to {
+        opacity: 0;
+        transform: translate(var(--dx), var(--dy)) rotate(var(--spin));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+        gap: 35px;
+        max-width: 650px;
+        padding-top: 55px;
+      }
+
+      h1 {
+        font-size: clamp(47px, 10vw, 76px);
+      }
+
+      .side {
+        width: min(100%, 470px);
+        margin: 0 auto;
+        padding-top: 0;
+      }
+
+      .doodle-star {
+        right: -30px;
+        top: 38%;
+      }
+
+      .doodle-plane {
+        display: none;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page {
+        padding: 20px 16px 24px;
+      }
+
+      .timezone {
+        font-size: 11px;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+      }
+
+      .layout {
+        padding: 44px 0 28px;
+      }
+
+      h1 {
+        font-size: clamp(39px, 12.5vw, 58px);
+        letter-spacing: -1px;
+      }
+
+      .intro {
+        margin: 20px 0 25px;
+        font-size: 14px;
+      }
+
+      .calendar-wrap {
+        padding-right: 9px;
+      }
+
+      .calendar {
+        box-shadow: 8px 8px 0 var(--ink);
+      }
+
+      .calendar-top {
+        padding: 11px 15px;
+        font-size: 12px;
+      }
+
+      .calendar-body {
+        padding: 26px 14px 20px;
+      }
+
+      .day-number {
+        margin-bottom: -10px;
+        font-size: clamp(110px, 40vw, 180px);
+        letter-spacing: -8px;
+      }
+
+      .countdown {
+        gap: 2px;
+      }
+
+      .time-unit strong {
+        font-size: 23px;
+      }
+
+      .release-date {
+        font-size: 10px;
+      }
+
+      .quote-paper {
+        padding: 35px 24px 25px;
+      }
+
+      blockquote {
+        min-height: 120px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <path d="M5 8.5h14M8 5v5m8-5v5M5 6h14v14H5z"/>
+            <path d="m8 14 2.2 2.2L16 12"/>
+          </svg>
+        </span>
+        bye việc club
+      </div>
+      <p class="timezone">Giờ Việt Nam · GMT+7</p>
+    </header>
+
+    <div class="layout">
+      <section class="hero" aria-labelledby="page-title">
+        <p class="kicker">Thông báo: sắp hết làm, còn sống!</p>
+        <h1 id="page-title">99 ngày nữa,<br><span class="yellow">bye việc!</span></h1>
+        <p class="intro">Đếm ngược tới ngày không còn deadline dí, không cuộc họp “xíu thôi”, và không tin nhắn “nhờ chút nhé”.</p>
+
+        <div class="calendar-wrap">
+          <div class="calendar">
+            <div class="calendar-top">
+              <span>Lịch giải phóng bản thân</span>
+              <span class="rings" aria-hidden="true"><i></i><i></i><i></i></span>
+            </div>
+            <div class="calendar-body">
+              <div class="day-number" id="days">99</div>
+              <p class="day-label" id="day-label">ngày nữa là tự do</p>
+              <p class="sub-label" id="sub-label">Kiên nhẫn xíu, lương vẫn đang về đều.</p>
+
+              <div class="countdown" aria-label="Đếm ngược tới ngày tự do" aria-live="off">
+                <div class="time-unit"><strong id="count-days">99</strong><span>ngày</span></div>
+                <div class="time-unit"><strong id="hours">00</strong><span>giờ</span></div>
+                <div class="time-unit"><strong id="minutes">00</strong><span>phút</span></div>
+                <div class="time-unit"><strong id="seconds">00</strong><span>giây</span></div>
+              </div>
+
+              <div class="progress-track" role="progressbar" aria-label="Tiến độ 99 ngày" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
+                <div class="progress-bar" id="progress-bar"></div>
+              </div>
+              <div class="release-date">
+                <span>Bắt đầu: 30.10.2026</span>
+                <strong>Ngày bay màu: 06.02.2027</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side" aria-label="Động lực nghỉ việc">
+        <svg class="doodle doodle-star" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+          <path d="M40 4c1 25 9 34 35 36-26 2-34 11-35 36-2-25-11-34-36-36 25-2 34-11 36-36Z" fill="currentColor" stroke="#24213a" stroke-width="3" stroke-linejoin="round"/>
+        </svg>
+
+        <div class="quote-paper">
+          <span class="quote-mark" aria-hidden="true">“</span>
+          <blockquote id="quote" aria-live="polite">Không ai trên giường bệnh lại ước: “Giá mà mình họp nhiều hơn.”</blockquote>
+          <p class="quote-caption">— Viện nghiên cứu chuyện bỏ việc</p>
+          <button class="quote-button" id="quote-button" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 7h-5V2M4 17h5v5"/>
+              <path d="M5.5 9a7 7 0 0 1 11.8-3L20 8M4 16l2.7 2A7 7 0 0 0 18.5 15"/>
+            </svg>
+            Cho tôi thêm động lực
+          </button>
+        </div>
+        <p class="tiny-note">Nghỉ việc là một kế hoạch.<br>Ăn trưa một mình cũng là một kỳ nghỉ.</p>
+      </aside>
+    </div>
+
+    <svg class="doodle doodle-plane" viewBox="0 0 130 90" fill="none" aria-hidden="true">
+      <path d="m8 36 111-27-39 72-23-31-49-14Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+      <path d="m57 50 62-41-45 58M57 50l-2 25 12-12" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+    </svg>
+
+    <footer class="footer">Làm vì đồng lương. Nghỉ vì lương tâm.</footer>
+  </main>
+
+  <script>
+    const startDate = new Date("2026-10-30T00:00:00+07:00");
+    const endDate = new Date(startDate.getTime() + 99 * 24 * 60 * 60 * 1000);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const quotes = [
+      "Đi làm để có cuộc sống, không phải sống để chờ mail ngoài giờ.",
+      "Nghỉ việc không phải bỏ cuộc. Là hết muốn cuộc họp kéo dài.",
+      "Deadline có thể gia hạn. Tuổi trẻ thì không có nút gia hạn.",
+      "Hôm nay làm hết mình. Ngày kia nghỉ hết luôn.",
+      "CV có thể viết lại. Tâm trí cần được nghỉ ngơi.",
+      "Ở lại vì lương. Ra đi vì lương không đủ bù tổn thương.",
+      "Không ai trên giường bệnh lại ước: “Giá mà mình họp nhiều hơn.”",
+      "Công việc tiếp theo có thể tốt hơn. Nhưng giấc ngủ trưa thì tốt nhất.",
+      "Thế giới ngoài kia rộng lớn. Lớn hơn bảng phân công công việc nhiều.",
+      "Nghỉ một việc, mở ra tám tiếng mỗi ngày để làm điều mình thích.",
+      "Sếp có thể tuyển bản thế chỗ. Mẹ bạn thì chỉ có một mình bạn.",
+      "Đừng sợ bắt đầu lại. Bạn đâu có bắt đầu từ con số không, bạn bắt đầu từ kinh nghiệm.",
+      "Chọn đường dài để đi làm đã khó. Chọn hướng mới cho cuộc sống còn đáng hơn.",
+      "Ngày mai vẫn đi làm. Nhưng hôm nay cứ mơ về ngày không phải đi.",
+      "Bạn không cần một lý do thật lớn để chọn một cuộc sống nhẹ nhàng hơn.",
+      "Ổn định là tốt. Nhưng bình yên mới là chân ái."
+    ];
+
+    let currentQuote = 6;
+    const quoteElement = document.getElementById("quote");
+    const quoteButton = document.getElementById("quote-button");
+
+    function updateCountdown() {
+      const now = new Date();
+      const remaining = Math.max(0, endDate.getTime() - now.getTime());
+      const totalDays = Math.ceil(remaining / 86400000);
+      const days = Math.floor(remaining / 86400000);
+      const hours = Math.floor((remaining % 86400000) / 3600000);
+      const minutes = Math.floor((remaining % 3600000) / 60000);
+      const seconds = Math.floor((remaining % 60000) / 1000);
+      const progress = Math.min(100, Math.max(0, (now - startDate) / (endDate - startDate) * 100));
+
+      document.getElementById("days").textContent = totalDays;
+      document.getElementById("count-days").textContent = days;
+      document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+      document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+      document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+      document.getElementById("progress-bar").style.width = `${progress}%`;
+      document.getElementById("progress").setAttribute("aria-valuenow", Math.round(progress));
+
+      if (remaining === 0) {
+        document.getElementById("day-label").textContent = "Chính thức tự do!";
+        document.getElementById("sub-label").textContent = "Hẹn công việc cũ: không bao giờ gặp lại.";
+      }
+    }
+
+    function createConfetti() {
+      if (reducedMotion) return;
+      const rect = quoteButton.getBoundingClientRect();
+      const colors = ["#3155e7", "#ff766f", "#fffdf7", "#8fe3c0"];
+
+      for (let i = 0; i < 22; i++) {
+        const piece = document.createElement("i");
+        piece.className = "confetti";
+        piece.style.setProperty("--x", `${rect.left + rect.width / 2}px`);
+        piece.style.setProperty("--y", `${rect.top + rect.height / 2}px`);
+        piece.style.setProperty("--dx", `${Math.random() * 300 - 150}px`);
+        piece.style.setProperty("--dy", `${Math.random() * -220 + 70}px`);
+        piece.style.setProperty("--spin", `${Math.random() * 720 - 360}deg`);
+        piece.style.setProperty("--color", colors[i % colors.length]);
+        document.body.appendChild(piece);
+        piece.addEventListener("animationend", () => piece.remove(), { once: true });
+      }
+    }
+
+    quoteButton.addEventListener("click", () => {
+      let nextQuote;
+      do {
+        nextQuote = Math.floor(Math.random() * quotes.length);
+      } while (nextQuote === currentQuote);
+      currentQuote = nextQuote;
+      quoteElement.textContent = quotes[currentQuote];
+      createConfetti();
+    });
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
