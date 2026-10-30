@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#3155e7">
   <meta name="description" content="99 ngày đếm ngược tới ngày giải phóng khỏi deadline, cuộc họp và những tin nhắn 'nhờ chút nhé'.">
+  <meta property="og:title" content="99 ngày nữa, bye việc!">
+  <meta property="og:description" content="Đếm ngược tới ngày không còn deadline dí, không cuộc họp 'xíu thôi', và không tin nhắn 'nhờ chút nhé'.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bachlong12623.github.io/daycount/">
+  <meta name="twitter:card" content="summary_large_image">
   <title>99 ngày nữa, bye việc!</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233155e7'/%3E%3Crect x='12' y='16' width='40' height='36' rx='6' fill='%23fffdf7' stroke='%2324213a' stroke-width='3'/%3E%3Crect x='12' y='16' width='40' height='12' fill='%23ff766f' stroke='%2324213a' stroke-width='3'/%3E%3Ctext x='32' y='48' text-anchor='middle' font-family='Arial Black,Arial,sans-serif' font-size='18' font-weight='900' fill='%233155e7'%3E99%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Bungee&display=swap" rel="stylesheet">
@@ -18,23 +24,28 @@
       --paper: #fffdf7;
       --ink: #24213a;
       --mint: #8fe3c0;
+      --bg: #3155e7;
+      --accent: #ffd84d;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-width: 320px;
       color: var(--ink);
-      background: var(--blue);
+      background: var(--bg);
       font-family: "Be Vietnam Pro", sans-serif;
+      transition: background .6s ease;
     }
 
-    button {
-      font: inherit;
+    body.freedom {
+      --bg: #1f9d6c;
+      --blue: #1f9d6c;
+      --accent: #ffe56a;
     }
+
+    button { font: inherit; }
 
     button:focus-visible {
       outline: 4px solid var(--paper);
@@ -45,8 +56,8 @@
       position: relative;
       isolation: isolate;
       min-height: 100svh;
-      overflow: hidden;
-      padding: 26px clamp(18px, 4vw, 64px) 30px;
+      overflow-x: hidden;
+      padding: 22px clamp(16px, 4vw, 56px) 28px;
     }
 
     .page::before {
@@ -81,18 +92,25 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 12px;
       max-width: 1240px;
       margin: 0 auto;
       color: var(--paper);
+      flex-wrap: wrap;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: inherit;
       font-size: 19px;
       font-weight: 900;
       letter-spacing: -.6px;
+      cursor: pointer;
     }
 
     .brand-mark {
@@ -106,11 +124,57 @@
       border-radius: 50% 50% 45% 55%;
       box-shadow: 3px 3px 0 var(--ink);
       transform: rotate(-8deg);
+      transition: transform .2s ease;
     }
 
-    .brand-mark svg {
-      width: 24px;
-      height: 24px;
+    .brand:hover .brand-mark,
+    .brand:focus-visible .brand-mark {
+      transform: rotate(12deg) scale(1.05);
+    }
+
+    .brand-mark svg { width: 24px; height: 24px; }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 36px;
+      padding: 7px 12px;
+      color: var(--ink);
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      box-shadow: 3px 3px 0 var(--ink);
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .chip:hover {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .chip:active {
+      transform: translate(3px, 3px);
+      box-shadow: none;
+    }
+
+    .chip.on {
+      background: var(--mint);
+    }
+
+    .chip svg {
+      width: 15px;
+      height: 15px;
     }
 
     .timezone {
@@ -118,8 +182,9 @@
       align-items: center;
       gap: 8px;
       margin: 0;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: .95;
     }
 
     .timezone::before {
@@ -129,30 +194,27 @@
       background: var(--mint);
       border: 2px solid var(--ink);
       border-radius: 50%;
+      animation: pulse 1.6s ease infinite;
     }
 
     .layout {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(300px, .75fr);
-      gap: clamp(40px, 7vw, 100px);
-      align-items: center;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+      gap: clamp(28px, 5vw, 70px);
+      align-items: start;
       max-width: 1180px;
-      min-height: calc(100svh - 150px);
       margin: 0 auto;
-      padding: 48px 0 38px;
+      padding: 36px 0 24px;
     }
 
-    .hero {
-      position: relative;
-      z-index: 1;
-    }
+    .hero { position: relative; z-index: 1; }
 
     .kicker {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      margin: 0 0 17px 8px;
+      margin: 0 0 14px 4px;
       padding: 8px 14px;
       color: var(--ink);
       background: var(--mint);
@@ -162,32 +224,49 @@
       font-size: clamp(12px, 1.4vw, 15px);
       font-weight: 800;
       transform: rotate(-2deg);
+      transition: background .4s ease, transform .3s ease;
     }
 
     h1 {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0;
       color: var(--paper);
       font-family: "Bungee", sans-serif;
-      font-size: clamp(43px, 6vw, 86px);
+      font-size: clamp(40px, 5.6vw, 78px);
       font-weight: 400;
       line-height: .98;
       letter-spacing: -2px;
       text-wrap: balance;
     }
 
-    h1 .yellow {
-      color: var(--yellow);
-    }
+    h1 .yellow { color: var(--yellow); }
 
     .intro {
       max-width: 540px;
-      margin: 24px 0 30px;
+      margin: 18px 0 22px;
       color: var(--paper);
-      font-size: clamp(15px, 1.6vw, 18px);
+      font-size: clamp(14px, 1.5vw, 17px);
       font-weight: 500;
       line-height: 1.65;
     }
+
+    .milestone-banner {
+      display: none;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 0 18px;
+      padding: 10px 14px;
+      color: var(--ink);
+      background: var(--coral);
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      box-shadow: 4px 4px 0 var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      transform: rotate(-1deg);
+    }
+
+    .milestone-banner.show { display: inline-flex; }
 
     .calendar-wrap {
       position: relative;
@@ -214,12 +293,12 @@
       border-bottom: 3px solid var(--ink);
       font-size: 14px;
       font-weight: 900;
+      transition: background .4s ease;
     }
 
-    .rings {
-      display: flex;
-      gap: 9px;
-    }
+    body.freedom .calendar-top { background: var(--yellow); }
+
+    .rings { display: flex; gap: 9px; }
 
     .rings i {
       display: block;
@@ -231,40 +310,53 @@
     }
 
     .calendar-body {
-      padding: clamp(20px, 4vw, 35px) clamp(18px, 4vw, 38px) 24px;
+      padding: clamp(18px, 3.5vw, 30px) clamp(16px, 3.5vw, 34px) 22px;
       text-align: center;
     }
 
-    .day-number {
-      margin: -10px 0 -18px;
+    .day-flip {
+      position: relative;
+      display: inline-grid;
+      min-width: 1.2em;
+      margin: -6px 0 -12px;
       color: var(--blue);
       font-family: "Bungee", sans-serif;
-      font-size: clamp(125px, 19vw, 230px);
+      font-size: clamp(110px, 17vw, 210px);
       font-weight: 400;
       line-height: 1;
-      letter-spacing: -12px;
-      transform: translateX(-5px);
+      letter-spacing: -10px;
+      perspective: 700px;
+    }
+
+    .day-flip span {
+      display: block;
+      transform-origin: center bottom;
+    }
+
+    .day-flip.tick span {
+      animation: flipDown .45s cubic-bezier(.2, .8, .2, 1);
     }
 
     .day-label {
       margin: 0;
-      font-size: clamp(20px, 3vw, 30px);
+      font-size: clamp(18px, 2.6vw, 28px);
       font-weight: 900;
       letter-spacing: -1px;
     }
 
     .sub-label {
-      margin: 5px 0 22px;
+      margin: 5px 0 18px;
       color: #666078;
       font-size: 13px;
       font-weight: 600;
+      min-height: 1.4em;
     }
 
     .countdown {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      padding-top: 18px;
+      padding-top: 16px;
       border-top: 2px dashed #b9b4bd;
     }
 
@@ -272,13 +364,26 @@
       display: flex;
       flex-direction: column;
       gap: 3px;
+      align-items: center;
     }
 
     .time-unit strong {
-      font-size: clamp(21px, 3.5vw, 32px);
+      display: inline-grid;
+      min-width: 2ch;
+      padding: 4px 6px;
+      background: #f3efe7;
+      border: 2px solid var(--ink);
+      border-radius: 8px;
+      font-size: clamp(18px, 3vw, 28px);
       font-weight: 900;
       letter-spacing: -1px;
       font-variant-numeric: tabular-nums;
+      transition: transform .15s ease, background .2s ease;
+    }
+
+    .time-unit strong.tick {
+      animation: popUnit .28s ease;
+      background: var(--yellow);
     }
 
     .time-unit span {
@@ -287,9 +392,37 @@
       font-weight: 700;
     }
 
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .stat-pill {
+      padding: 10px 12px;
+      background: #f6f1e8;
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .stat-pill strong {
+      display: block;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+    }
+
+    .stat-pill span {
+      color: #6e687c;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
     .progress-track {
-      height: 12px;
-      margin-top: 19px;
+      height: 14px;
+      margin-top: 14px;
       overflow: hidden;
       background: #e8e3dc;
       border: 2px solid var(--ink);
@@ -299,7 +432,7 @@
     .progress-bar {
       width: 0;
       height: 100%;
-      background: var(--mint);
+      background: linear-gradient(90deg, var(--mint), var(--yellow));
       border-right: 2px solid var(--ink);
       transition: width .5s ease;
     }
@@ -308,29 +441,34 @@
       display: flex;
       justify-content: space-between;
       gap: 14px;
-      margin: 11px 2px 0;
+      margin: 10px 2px 0;
       color: #6e687c;
       font-size: 11px;
       font-weight: 700;
     }
 
-    .release-date strong {
-      color: var(--ink);
-    }
+    .release-date strong { color: var(--ink); }
 
     .side {
       position: relative;
       z-index: 2;
-      padding-top: 40px;
+      display: grid;
+      gap: 18px;
+      padding-top: 8px;
+    }
+
+    .quote-paper,
+    .panel {
+      position: relative;
+      background: var(--paper);
+      border: 3px solid var(--ink);
+      box-shadow: 8px 8px 0 var(--ink);
     }
 
     .quote-paper {
-      position: relative;
-      padding: 40px 30px 30px;
+      padding: 34px 26px 24px;
       background: var(--yellow);
-      border: 3px solid var(--ink);
-      box-shadow: 10px 10px 0 var(--ink);
-      transform: rotate(3deg);
+      transform: rotate(2deg);
     }
 
     .quote-paper::before {
@@ -347,69 +485,233 @@
 
     .quote-mark {
       position: absolute;
-      top: 18px;
-      left: 23px;
+      top: 14px;
+      left: 18px;
       color: var(--coral);
       font-family: Georgia, serif;
-      font-size: 76px;
+      font-size: 68px;
       font-weight: 900;
       line-height: 1;
     }
 
     blockquote {
-      min-height: 145px;
-      margin: 25px 0 24px;
-      font-size: clamp(20px, 2.2vw, 28px);
+      min-height: 120px;
+      margin: 22px 0 16px;
+      font-size: clamp(18px, 2vw, 24px);
       font-weight: 900;
-      line-height: 1.42;
-      letter-spacing: -.8px;
+      line-height: 1.4;
+      letter-spacing: -.6px;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    blockquote.swap {
+      opacity: 0;
+      transform: translateY(8px);
     }
 
     .quote-caption {
-      margin: 0 0 25px;
+      margin: 0 0 18px;
       font-size: 12px;
       font-weight: 700;
     }
 
-    .quote-button {
+    .quote-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .action-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 9px;
-      width: 100%;
-      min-height: 51px;
-      padding: 12px 17px;
+      gap: 8px;
+      min-height: 48px;
+      padding: 10px 12px;
       color: var(--paper);
       background: var(--blue);
       border: 2px solid var(--ink);
       border-radius: 8px;
-      box-shadow: 4px 4px 0 var(--ink);
-      font-size: 14px;
+      box-shadow: 3px 3px 0 var(--ink);
+      font-size: 13px;
       font-weight: 800;
       cursor: pointer;
       transition: transform .15s ease, box-shadow .15s ease;
     }
 
-    .quote-button:hover {
-      transform: translate(2px, 2px);
+    .action-btn.secondary {
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    .action-btn:hover {
+      transform: translate(1px, 1px);
       box-shadow: 2px 2px 0 var(--ink);
     }
 
-    .quote-button:active {
-      transform: translate(4px, 4px);
+    .action-btn:active {
+      transform: translate(3px, 3px);
       box-shadow: none;
     }
 
-    .quote-button svg {
-      width: 19px;
-      height: 19px;
+    .action-btn svg {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .panel {
+      padding: 18px 18px 16px;
+      border-radius: 12px;
+    }
+
+    .panel h2 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -.3px;
+    }
+
+    .panel-note {
+      margin: 0 0 14px;
+      color: #666078;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .mood-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .mood-value {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .mood-slider {
+      width: 100%;
+      appearance: none;
+      height: 14px;
+      background: linear-gradient(90deg, var(--coral), var(--yellow), var(--mint));
+      border: 2px solid var(--ink);
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .mood-slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      box-shadow: 2px 2px 0 var(--ink);
+      cursor: grab;
+    }
+
+    .mood-slider::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      box-shadow: 2px 2px 0 var(--ink);
+      cursor: grab;
+    }
+
+    .mood-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      color: #6e687c;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .mood-msg {
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      background: #f6f1e8;
+      border: 2px dashed var(--ink);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .check-item {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px 12px;
+      background: #f7f2ea;
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .2s ease, transform .15s ease;
+    }
+
+    .check-item:hover { transform: translateX(2px); }
+
+    .check-item.done {
+      background: #dff8ec;
+      text-decoration: none;
+    }
+
+    .check-item.done .check-text {
+      text-decoration: line-through;
+      opacity: .72;
+    }
+
+    .check-box {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      margin-top: 1px;
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .check-item.done .check-box {
+      background: var(--mint);
+    }
+
+    .check-text {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .check-progress {
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 800;
     }
 
     .tiny-note {
-      position: relative;
-      width: 88%;
-      margin: 35px auto 0;
-      padding: 15px 18px;
+      width: 92%;
+      margin: 4px auto 0;
+      padding: 14px 16px;
       color: var(--ink);
       background: var(--sky);
       border: 2px solid var(--ink);
@@ -418,47 +720,81 @@
       font-weight: 700;
       line-height: 1.55;
       text-align: center;
-      transform: rotate(-3deg);
+      transform: rotate(-2deg);
     }
 
     .doodle {
       position: absolute;
-      z-index: -1;
+      z-index: 0;
       pointer-events: none;
     }
 
     .doodle-star {
-      width: 62px;
-      right: 3%;
-      top: 20%;
+      width: 58px;
+      right: 2%;
+      top: 8%;
       color: var(--yellow);
       transform: rotate(12deg);
+      animation: floaty 4s ease-in-out infinite;
     }
 
     .doodle-plane {
-      width: 112px;
-      left: 44%;
-      bottom: 5%;
+      width: 104px;
+      left: 42%;
+      bottom: 2%;
       color: var(--paper);
       transform: rotate(-8deg);
-      opacity: .9;
+      opacity: .92;
+      cursor: pointer;
+      pointer-events: auto;
+      z-index: 2;
+      transition: transform .2s ease;
     }
+
+    .doodle-plane:hover { transform: rotate(-2deg) translateY(-4px) scale(1.04); }
 
     .footer {
       position: relative;
       z-index: 2;
       max-width: 1180px;
-      margin: 0 auto;
+      margin: 8px auto 0;
       color: var(--paper);
       font-size: 12px;
       font-weight: 600;
       text-align: center;
-      opacity: .85;
+      opacity: .88;
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 40;
+      left: 50%;
+      bottom: 24px;
+      min-width: 180px;
+      max-width: min(90vw, 360px);
+      padding: 12px 16px;
+      color: var(--ink);
+      background: var(--paper);
+      border: 2px solid var(--ink);
+      border-radius: 10px;
+      box-shadow: 4px 4px 0 var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .confetti {
       position: fixed;
-      z-index: 20;
+      z-index: 30;
       width: 10px;
       height: 16px;
       top: var(--y);
@@ -466,7 +802,50 @@
       background: var(--color);
       border: 1px solid var(--ink);
       pointer-events: none;
-      animation: pop 850ms cubic-bezier(.1, .7, .4, 1) forwards;
+      animation: pop 900ms cubic-bezier(.1, .7, .4, 1) forwards;
+    }
+
+    .freedom-burst {
+      position: fixed;
+      inset: 0;
+      z-index: 25;
+      display: none;
+      place-items: center;
+      background: rgba(36, 33, 58, .28);
+      pointer-events: none;
+    }
+
+    .freedom-burst.show { display: grid; }
+
+    .freedom-card {
+      padding: 28px 32px;
+      color: var(--ink);
+      background: var(--yellow);
+      border: 3px solid var(--ink);
+      border-radius: 16px;
+      box-shadow: 10px 10px 0 var(--ink);
+      text-align: center;
+      animation: boomIn .5s cubic-bezier(.2, .9, .2, 1);
+    }
+
+    .freedom-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-family: "Bungee", sans-serif;
+      font-size: clamp(28px, 6vw, 42px);
+      letter-spacing: -1px;
+    }
+
+    @keyframes flipDown {
+      0% { transform: rotateX(0); }
+      40% { transform: rotateX(-85deg); opacity: .4; }
+      100% { transform: rotateX(0); opacity: 1; }
+    }
+
+    @keyframes popUnit {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.12); }
+      100% { transform: scale(1); }
     }
 
     @keyframes pop {
@@ -476,108 +855,53 @@
       }
     }
 
-    @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-        gap: 35px;
-        max-width: 650px;
-        padding-top: 55px;
-      }
-
-      h1 {
-        font-size: clamp(47px, 10vw, 76px);
-      }
-
-      .side {
-        width: min(100%, 470px);
-        margin: 0 auto;
-        padding-top: 0;
-      }
-
-      .doodle-star {
-        right: -30px;
-        top: 38%;
-      }
-
-      .doodle-plane {
-        display: none;
-      }
+    @keyframes floaty {
+      0%, 100% { transform: rotate(12deg) translateY(0); }
+      50% { transform: rotate(18deg) translateY(-8px); }
     }
 
-    @media (max-width: 520px) {
-      .page {
-        padding: 20px 16px 24px;
-      }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.25); opacity: .7; }
+    }
 
-      .timezone {
-        font-size: 11px;
-      }
+    @keyframes boomIn {
+      from { transform: scale(.7) rotate(-4deg); opacity: 0; }
+      to { transform: scale(1) rotate(0); opacity: 1; }
+    }
 
-      .brand {
-        font-size: 16px;
-      }
-
-      .brand-mark {
-        width: 34px;
-        height: 34px;
-      }
-
+    @media (max-width: 980px) {
       .layout {
-        padding: 44px 0 28px;
+        grid-template-columns: 1fr;
+        gap: 28px;
+        max-width: 640px;
       }
 
+      .side { width: min(100%, 520px); margin: 0 auto; }
+      .doodle-plane { display: none; }
+      .quote-paper { transform: none; }
+    }
+
+    @media (max-width: 560px) {
+      .page { padding: 16px 14px 22px; }
+      .brand { font-size: 15px; }
+      .brand-mark { width: 34px; height: 34px; }
+      .chip { font-size: 11px; padding: 6px 10px; }
       h1 {
-        font-size: clamp(39px, 12.5vw, 58px);
+        font-size: clamp(34px, 11vw, 52px);
         letter-spacing: -1px;
       }
-
-      .intro {
-        margin: 20px 0 25px;
-        font-size: 14px;
+      .calendar-wrap { padding-right: 8px; }
+      .calendar { box-shadow: 8px 8px 0 var(--ink); }
+      .day-flip {
+        font-size: clamp(96px, 34vw, 150px);
+        letter-spacing: -7px;
       }
-
-      .calendar-wrap {
-        padding-right: 9px;
-      }
-
-      .calendar {
-        box-shadow: 8px 8px 0 var(--ink);
-      }
-
-      .calendar-top {
-        padding: 11px 15px;
-        font-size: 12px;
-      }
-
-      .calendar-body {
-        padding: 26px 14px 20px;
-      }
-
-      .day-number {
-        margin-bottom: -10px;
-        font-size: clamp(110px, 40vw, 180px);
-        letter-spacing: -8px;
-      }
-
-      .countdown {
-        gap: 2px;
-      }
-
-      .time-unit strong {
-        font-size: 23px;
-      }
-
-      .release-date {
-        font-size: 10px;
-      }
-
-      .quote-paper {
-        padding: 35px 24px 25px;
-      }
-
-      blockquote {
-        min-height: 120px;
-      }
+      .countdown { gap: 4px; }
+      .time-unit strong { font-size: 18px; padding: 4px; }
+      .stats-row { grid-template-columns: 1fr; }
+      .quote-actions { grid-template-columns: 1fr; }
+      .release-date { flex-direction: column; gap: 4px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -587,13 +911,15 @@
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
       }
+      .timezone::before { animation: none; }
+      .doodle-star { animation: none; }
     }
   </style>
 </head>
 <body>
   <main class="page">
     <header class="topbar">
-      <div class="brand">
+      <button class="brand" id="brand-btn" type="button" title="Bí mật bye việc">
         <span class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
             <path d="M5 8.5h14M8 5v5m8-5v5M5 6h14v14H5z"/>
@@ -601,32 +927,60 @@
           </svg>
         </span>
         bye việc club
+      </button>
+      <div class="top-actions">
+        <button class="chip" id="sound-btn" type="button" aria-pressed="false" title="Bật/tắt âm thanh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M11 5 6 9H3v6h3l5 4V5z"/>
+            <path d="M16 9.5a4 4 0 0 1 0 5"/>
+          </svg>
+          <span id="sound-label">Âm thanh: tắt</span>
+        </button>
+        <button class="chip" id="share-btn" type="button" title="Chia sẻ đếm ngược">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>
+          </svg>
+          Chia sẻ
+        </button>
+        <p class="timezone">Giờ Việt Nam · GMT+7</p>
       </div>
-      <p class="timezone">Giờ Việt Nam · GMT+7</p>
     </header>
 
     <div class="layout">
       <section class="hero" aria-labelledby="page-title">
-        <p class="kicker">Thông báo: sắp hết làm, còn sống!</p>
-        <h1 id="page-title">99 ngày nữa,<br><span class="yellow">bye việc!</span></h1>
-        <p class="intro">Đếm ngược tới ngày không còn deadline dí, không cuộc họp “xíu thôi”, và không tin nhắn “nhờ chút nhé”.</p>
+        <p class="kicker" id="kicker">Thông báo: sắp hết làm, còn sống!</p>
+        <h1 id="page-title"><span id="title-days">99</span> ngày nữa,<br><span class="yellow" id="title-bye">bye việc!</span></h1>
+        <p class="intro" id="intro">Đếm ngược tới ngày không còn deadline dí, không cuộc họp “xíu thôi”, và không tin nhắn “nhờ chút nhé”.</p>
+        <div class="milestone-banner" id="milestone" role="status"></div>
 
         <div class="calendar-wrap">
           <div class="calendar">
             <div class="calendar-top">
-              <span>Lịch giải phóng bản thân</span>
+              <span id="calendar-title">Lịch giải phóng bản thân</span>
               <span class="rings" aria-hidden="true"><i></i><i></i><i></i></span>
             </div>
             <div class="calendar-body">
-              <div class="day-number" id="days">99</div>
+              <div class="day-flip" id="day-flip" aria-live="polite"><span id="days">99</span></div>
               <p class="day-label" id="day-label">ngày nữa là tự do</p>
               <p class="sub-label" id="sub-label">Kiên nhẫn xíu, lương vẫn đang về đều.</p>
 
-              <div class="countdown" aria-label="Đếm ngược tới ngày tự do" aria-live="off">
+              <div class="countdown" aria-label="Đếm ngược tới ngày tự do">
                 <div class="time-unit"><strong id="count-days">99</strong><span>ngày</span></div>
                 <div class="time-unit"><strong id="hours">00</strong><span>giờ</span></div>
                 <div class="time-unit"><strong id="minutes">00</strong><span>phút</span></div>
                 <div class="time-unit"><strong id="seconds">00</strong><span>giây</span></div>
+              </div>
+
+              <div class="stats-row">
+                <div class="stat-pill">
+                  <strong id="survived">0</strong>
+                  <span>ngày đã sống sót</span>
+                </div>
+                <div class="stat-pill">
+                  <strong id="progress-pct">0%</strong>
+                  <span>tiến độ giải phóng</span>
+                </div>
               </div>
 
               <div class="progress-track" role="progressbar" aria-label="Tiến độ 99 ngày" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress">
@@ -648,21 +1002,50 @@
 
         <div class="quote-paper">
           <span class="quote-mark" aria-hidden="true">“</span>
-          <blockquote id="quote" aria-live="polite">Không ai trên giường bệnh lại ước: “Giá mà mình họp nhiều hơn.”</blockquote>
+          <blockquote id="quote">Không ai trên giường bệnh lại ước: “Giá mà mình họp nhiều hơn.”</blockquote>
           <p class="quote-caption">— Viện nghiên cứu chuyện bỏ việc</p>
-          <button class="quote-button" id="quote-button" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20 7h-5V2M4 17h5v5"/>
-              <path d="M5.5 9a7 7 0 0 1 11.8-3L20 8M4 16l2.7 2A7 7 0 0 0 18.5 15"/>
-            </svg>
-            Cho tôi thêm động lực
-          </button>
+          <div class="quote-actions">
+            <button class="action-btn" id="quote-button" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 7h-5V2M4 17h5v5"/>
+                <path d="M5.5 9a7 7 0 0 1 11.8-3L20 8M4 16l2.7 2A7 7 0 0 0 18.5 15"/>
+              </svg>
+              Động lực mới
+            </button>
+            <button class="action-btn secondary" id="share-quote-btn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/>
+                <path d="M16 6 12 2 8 6M12 2v13"/>
+              </svg>
+              Share quote
+            </button>
+          </div>
         </div>
-        <p class="tiny-note">Nghỉ việc là một kế hoạch.<br>Ăn trưa một mình cũng là một kỳ nghỉ.</p>
+
+        <section class="panel" aria-label="Thanh tâm trạng">
+          <h2>Thanh chịu đựng hôm nay</h2>
+          <p class="panel-note">Kéo xem bạn đang “ổn” hay “sắp nổ”.</p>
+          <div class="mood-head">
+            <span class="mood-value" id="mood-emoji">😐 Ổn-ổn</span>
+            <strong id="mood-num">50</strong>
+          </div>
+          <input class="mood-slider" id="mood-slider" type="range" min="0" max="100" value="50" aria-label="Mức chịu đựng">
+          <div class="mood-labels"><span>Sắp nổ</span><span>Bay màu luôn</span></div>
+          <p class="mood-msg" id="mood-msg">Còn chịu được… miễn là không họp sau 17h.</p>
+        </section>
+
+        <section class="panel" aria-label="Checklist chuẩn bị nghỉ việc">
+          <h2>Checklist trước ngày bay</h2>
+          <p class="panel-note">Tích xong cái nào cũng là một chiến công nhỏ.</p>
+          <ul class="checklist" id="checklist"></ul>
+          <p class="check-progress" id="check-progress">0/8 việc đã xong</p>
+        </section>
+
+        <p class="tiny-note" id="tiny-note">Nghỉ việc là một kế hoạch.<br>Ăn trưa một mình cũng là một kỳ nghỉ.</p>
       </aside>
     </div>
 
-    <svg class="doodle doodle-plane" viewBox="0 0 130 90" fill="none" aria-hidden="true">
+    <svg class="doodle doodle-plane" id="plane" viewBox="0 0 130 90" fill="none" role="button" tabindex="0" aria-label="Máy bay easter egg">
       <path d="m8 36 111-27-39 72-23-31-49-14Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
       <path d="m57 50 62-41-45 58M57 50l-2 25 12-12" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
     </svg>
@@ -670,10 +1053,24 @@
     <footer class="footer">Làm vì đồng lương. Nghỉ vì lương tâm.</footer>
   </main>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="freedom-burst" id="freedom-burst" aria-hidden="true">
+    <div class="freedom-card">
+      <strong>CHÍNH THỨC TỰ DO</strong>
+      <span>Deadline đã chết. Bạn thì chưa.</span>
+    </div>
+  </div>
+
   <script>
     const startDate = new Date("2026-10-30T00:00:00+07:00");
     const endDate = new Date(startDate.getTime() + 99 * 24 * 60 * 60 * 1000);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const STORAGE = {
+      checks: "byeviec-checks-v1",
+      mood: "byeviec-mood-v1",
+      sound: "byeviec-sound-v1",
+      celebrated: "byeviec-celebrated-v1"
+    };
 
     const quotes = [
       "Đi làm để có cuộc sống, không phải sống để chờ mail ngoài giờ.",
@@ -691,49 +1088,220 @@
       "Chọn đường dài để đi làm đã khó. Chọn hướng mới cho cuộc sống còn đáng hơn.",
       "Ngày mai vẫn đi làm. Nhưng hôm nay cứ mơ về ngày không phải đi.",
       "Bạn không cần một lý do thật lớn để chọn một cuộc sống nhẹ nhàng hơn.",
-      "Ổn định là tốt. Nhưng bình yên mới là chân ái."
+      "Ổn định là tốt. Nhưng bình yên mới là chân ái.",
+      "Slack có thể offline. Tâm trạng thì cần online với chính mình.",
+      "Nếu mỗi sáng đều muốn bấm 'Out of office'… thì có lẽ đã đến lúc."
     ];
 
-    let currentQuote = 6;
-    const quoteElement = document.getElementById("quote");
-    const quoteButton = document.getElementById("quote-button");
+    const secretQuotes = [
+      "Easter egg unlocked: bạn đã click nhiều hơn sếp gửi 'nhờ chút nhé'.",
+      "Máy bay giấy bảo: đường bay tốt nhất là đường ra khỏi meeting room.",
+      "Bí mật nghề nghiệp: nút Leave Meeting tồn tại vì một lý do."
+    ];
 
-    function updateCountdown() {
-      const now = new Date();
-      const remaining = Math.max(0, endDate.getTime() - now.getTime());
-      const totalDays = Math.ceil(remaining / 86400000);
-      const days = Math.floor(remaining / 86400000);
-      const hours = Math.floor((remaining % 86400000) / 3600000);
-      const minutes = Math.floor((remaining % 3600000) / 60000);
-      const seconds = Math.floor((remaining % 60000) / 1000);
-      const progress = Math.min(100, Math.max(0, (now - startDate) / (endDate - startDate) * 100));
+    const checklistItems = [
+      "Xóa app Slack / Teams khỏi điện thoại",
+      "Lên list quán cafe 'làm việc tự do' trong 7 ngày đầu",
+      "Chụp ảnh bàn làm việc lần cuối (để cười về sau)",
+      "Mua balo / vali nhỏ cho chuyến đi đầu tiên",
+      "Backup file cá nhân, log out hết tài khoản công ty",
+      "Nhắn 3 người bạn: 'tao sắp free rồi'",
+      "Viết 1 đoạn 'cảm ơn & bye' sẵn, khỏi nghĩ dịp cuối",
+      "Đặt lịch ngủ bù 1 buổi sáng sau ngày bay màu"
+    ];
 
-      document.getElementById("days").textContent = totalDays;
-      document.getElementById("count-days").textContent = days;
-      document.getElementById("hours").textContent = String(hours).padStart(2, "0");
-      document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
-      document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
-      document.getElementById("progress-bar").style.width = `${progress}%`;
-      document.getElementById("progress").setAttribute("aria-valuenow", Math.round(progress));
-
-      if (remaining === 0) {
-        document.getElementById("day-label").textContent = "Chính thức tự do!";
-        document.getElementById("sub-label").textContent = "Hẹn công việc cũ: không bao giờ gặp lại.";
+    const milestones = [
+      {
+        max: 0,
+        kicker: "BREAKING: đã nghỉ việc thật rồi!",
+        label: "chính thức tự do",
+        sub: "Hẹn công việc cũ: không bao giờ gặp lại.",
+        intro: "Bạn đã tới vạch đích. Từ giờ calendar trống là tính năng, không phải bug.",
+        banner: "🎉 DAY 0 — Cửa thoát đã mở toang!",
+        titleBye: "TỰ DO!",
+        calendar: "Lịch đời mới",
+        note: "Không còn OOO. Bạn chính là Out Of Office."
+      },
+      {
+        max: 1,
+        kicker: "Còn 1 ngày. Thở đã!",
+        label: "ngày nữa là xong",
+        sub: "Gói đồ tinh thần: xong. Gói đồ thật: tùy hứng.",
+        intro: "Ngày cuối cùng. Mỉm cười với máy in, rồi biến mất như ninja.",
+        banner: "⚡ FINAL BOSS: 1 ngày nữa!",
+        titleBye: "bye việc!",
+        calendar: "Lịch đếm ngược cực đại",
+        note: "Ngày mai bạn thức dậy… và không phải đi làm."
+      },
+      {
+        max: 7,
+        kicker: "Tuần cuối cùng của sự chịu đựng",
+        label: "ngày nữa là tự do",
+        sub: "Cười với đồng nghiệp kiểu người sắp biến mất.",
+        intro: "Dưới 1 tuần. Não đã chuyển sang chế độ 'còn mỗi đếm ngược'.",
+        banner: "🔥 Còn ≤ 7 ngày — chuẩn bị tinh thần bay màu!",
+        titleBye: "bye việc!",
+        calendar: "Lịch giải phóng bản thân",
+        note: "Đếm từng họp như đếm cừu. Sắp ngủ ngon."
+      },
+      {
+        max: 30,
+        kicker: "Cửa thoát đã lấp ló",
+        label: "ngày nữa là tự do",
+        sub: "Nhìn calendar thấy hy vọng rõ hơn Excel.",
+        intro: "Còn trong 1 tháng. Deadline vẫn dí, nhưng bạn dí lại bằng hy vọng.",
+        banner: "🚪 Còn ≤ 30 ngày — đã thấy cửa thoát!",
+        titleBye: "bye việc!",
+        calendar: "Lịch giải phóng bản thân",
+        note: "Một tháng nữa thôi. Bạn làm được."
+      },
+      {
+        max: 60,
+        kicker: "Nửa kia của hành trình",
+        label: "ngày nữa là tự do",
+        sub: "Đã đi được một đoạn kha khá. Đừng quay xe.",
+        intro: "Hơn nửa chặng đường. Mail vẫn bay, nhưng tinh thần đã cứng hơn.",
+        banner: "💪 Còn ≤ 60 ngày — giữ vững phong độ!",
+        titleBye: "bye việc!",
+        calendar: "Lịch giải phóng bản thân",
+        note: "Mỗi ngày qua là một meeting bạn không phải dự mãi mãi."
+      },
+      {
+        max: 90,
+        kicker: "Khởi động nhẹ, đừng burnout sớm",
+        label: "ngày nữa là tự do",
+        sub: "Mới bắt đầu đếm — nhưng đếm là có hy vọng.",
+        intro: "Hành trình 99 ngày đã mở. Cứ đi làm, cứ mơ nghỉ, cân bằng là nghệ thuật.",
+        banner: "🌱 Còn ≤ 90 ngày — warm-up trước ngày tự do",
+        titleBye: "bye việc!",
+        calendar: "Lịch giải phóng bản thân",
+        note: "Nghỉ việc là một kế hoạch. Ăn trưa một mình cũng là một kỳ nghỉ."
+      },
+      {
+        max: 999,
+        kicker: "Thông báo: sắp hết làm, còn sống!",
+        label: "ngày nữa là tự do",
+        sub: "Kiên nhẫn xíu, lương vẫn đang về đều.",
+        intro: "Đếm ngược tới ngày không còn deadline dí, không cuộc họp “xíu thôi”, và không tin nhắn “nhờ chút nhé”.",
+        banner: "",
+        titleBye: "bye việc!",
+        calendar: "Lịch giải phóng bản thân",
+        note: "Nghỉ việc là một kế hoạch. Ăn trưa một mình cũng là một kỳ nghỉ."
       }
+    ];
+
+    const moodCopy = [
+      { max: 15, emoji: "🤬  Sắp nổ", msg: "Khuyến nghị: thở 4-7-8, đóng tab email, nhìn đếm ngược 10 giây." },
+      { max: 35, emoji: "😣  Mệt xỉu", msg: "Hôm nay meeting hơi nhiều. Bù bằng trà sữa và quote động lực." },
+      { max: 55, emoji: "😐  Ổn-ổn", msg: "Còn chịu được… miễn là không họp sau 17h." },
+      { max: 75, emoji: "🙂  Khá ok", msg: "Tâm trạng ổn. Có thể viết checklist nghỉ việc cho vui." },
+      { max: 90, emoji: "😄  Phấn khích", msg: "Đang hóng ngày bay. Cẩn thận cười một mình giữa office." },
+      { max: 100, emoji: "🚀  Bay màu", msg: "Chế độ tự do đã bật trong đầu. Cơ thể chỉ đang countdown." }
+    ]
+
+    const els = {
+      days: document.getElementById("days"),
+      dayFlip: document.getElementById("day-flip"),
+      titleDays: document.getElementById("title-days"),
+      titleBye: document.getElementById("title-bye"),
+      pageTitle: document.getElementById("page-title"),
+      docTitle: document.querySelector("title"),
+      kicker: document.getElementById("kicker"),
+      intro: document.getElementById("intro"),
+      milestone: document.getElementById("milestone"),
+      dayLabel: document.getElementById("day-label"),
+      subLabel: document.getElementById("sub-label"),
+      calendarTitle: document.getElementById("calendar-title"),
+      countDays: document.getElementById("count-days"),
+      hours: document.getElementById("hours"),
+      minutes: document.getElementById("minutes"),
+      seconds: document.getElementById("seconds"),
+      survived: document.getElementById("survived"),
+      progressPct: document.getElementById("progress-pct"),
+      progress: document.getElementById("progress"),
+      progressBar: document.getElementById("progress-bar"),
+      quote: document.getElementById("quote"),
+      quoteButton: document.getElementById("quote-button"),
+      shareQuoteBtn: document.getElementById("share-quote-btn"),
+      shareBtn: document.getElementById("share-btn"),
+      soundBtn: document.getElementById("sound-btn"),
+      soundLabel: document.getElementById("sound-label"),
+      brandBtn: document.getElementById("brand-btn"),
+      plane: document.getElementById("plane"),
+      checklist: document.getElementById("checklist"),
+      checkProgress: document.getElementById("check-progress"),
+      moodSlider: document.getElementById("mood-slider"),
+      moodEmoji: document.getElementById("mood-emoji"),
+      moodNum: document.getElementById("mood-num"),
+      moodMsg: document.getElementById("mood-msg"),
+      tinyNote: document.getElementById("tiny-note"),
+      toast: document.getElementById("toast"),
+      freedomBurst: document.getElementById("freedom-burst")
+    };
+
+    let currentQuote = 6;
+    let lastDayShown = null;
+    let lastSeconds = null;
+    let lastMilestoneKey = null;
+    let soundOn = localStorage.getItem(STORAGE.sound) === "1";
+    let audioCtx = null;
+    let freedomCelebrated = localStorage.getItem(STORAGE.celebrated) === "1";
+    let quoteTimer = null;
+    let latestRemainingDays = 99;
+
+    function pad(n) {
+      return String(n).padStart(2, "0");
     }
 
-    function createConfetti() {
-      if (reducedMotion) return;
-      const rect = quoteButton.getBoundingClientRect();
-      const colors = ["#3155e7", "#ff766f", "#fffdf7", "#8fe3c0"];
+    function showToast(message) {
+      els.toast.textContent = message;
+      els.toast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => els.toast.classList.remove("show"), 2200);
+    }
 
-      for (let i = 0; i < 22; i++) {
+    function ensureAudio() {
+      if (!audioCtx) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return null;
+        audioCtx = new Ctx();
+      }
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return audioCtx;
+    }
+
+    function beep(freq = 660, duration = 0.07, type = "square", gainValue = 0.03) {
+      if (!soundOn || reducedMotion) return;
+      const ctx = ensureAudio();
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.value = gainValue;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      const now = ctx.currentTime;
+      gain.gain.setValueAtTime(gainValue, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+      osc.start(now);
+      osc.stop(now + duration);
+    }
+
+    function createConfetti(originEl, count = 24) {
+      if (reducedMotion) return;
+      const rect = (originEl || document.body).getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const colors = ["#3155e7", "#ff766f", "#fffdf7", "#8fe3c0", "#ffd84d"];
+
+      for (let i = 0; i < count; i++) {
         const piece = document.createElement("i");
         piece.className = "confetti";
-        piece.style.setProperty("--x", `${rect.left + rect.width / 2}px`);
-        piece.style.setProperty("--y", `${rect.top + rect.height / 2}px`);
-        piece.style.setProperty("--dx", `${Math.random() * 300 - 150}px`);
-        piece.style.setProperty("--dy", `${Math.random() * -220 + 70}px`);
+        piece.style.setProperty("--x", `${x}px`);
+        piece.style.setProperty("--y", `${y}px`);
+        piece.style.setProperty("--dx", `${Math.random() * 340 - 170}px`);
+        piece.style.setProperty("--dy", `${Math.random() * -260 + 40}px`);
         piece.style.setProperty("--spin", `${Math.random() * 720 - 360}deg`);
         piece.style.setProperty("--color", colors[i % colors.length]);
         document.body.appendChild(piece);
@@ -741,18 +1309,292 @@
       }
     }
 
-    quoteButton.addEventListener("click", () => {
-      let nextQuote;
+    function setTextTick(el, value) {
+      const next = String(value);
+      if (el.textContent === next) return false;
+      el.textContent = next;
+      if (!reducedMotion) {
+        el.classList.remove("tick");
+        void el.offsetWidth;
+        el.classList.add("tick");
+      }
+      return true;
+    }
+
+    function getMilestone(daysLeft) {
+      return milestones.find((item) => daysLeft <= item.max) || milestones[milestones.length - 1];
+    }
+
+    function applyMilestone(daysLeft, isFree) {
+      const m = getMilestone(daysLeft);
+      const key = m.max;
+      if (key === lastMilestoneKey) return;
+      lastMilestoneKey = key;
+
+      els.kicker.textContent = m.kicker;
+      els.dayLabel.textContent = m.label;
+      els.subLabel.textContent = m.sub;
+      els.intro.textContent = m.intro;
+      els.titleBye.textContent = m.titleBye;
+      els.calendarTitle.textContent = m.calendar;
+      els.tinyNote.innerHTML = m.note.replace(/\n/g, "<br>");
+
+      if (m.banner) {
+        els.milestone.textContent = m.banner;
+        els.milestone.classList.add("show");
+      } else {
+        els.milestone.classList.remove("show");
+        els.milestone.textContent = "";
+      }
+
+      document.body.classList.toggle("freedom", isFree);
+      if (isFree && !freedomCelebrated) {
+        freedomCelebrated = true;
+        localStorage.setItem(STORAGE.celebrated, "1");
+        celebrateFreedom();
+      }
+    }
+
+    function celebrateFreedom() {
+      createConfetti(els.dayFlip, 60);
+      createConfetti(els.quoteButton, 40);
+      els.freedomBurst.classList.add("show");
+      els.freedomBurst.setAttribute("aria-hidden", "false");
+      beep(523, 0.1, "square", 0.04);
+      setTimeout(() => beep(659, 0.1, "square", 0.04), 120);
+      setTimeout(() => beep(784, 0.18, "square", 0.045), 240);
+      setTimeout(() => {
+        els.freedomBurst.classList.remove("show");
+        els.freedomBurst.setAttribute("aria-hidden", "true");
+      }, 3200);
+      showToast("Chúc mừng ngày tự do! 🫡");
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+      const remainingMs = Math.max(0, endDate.getTime() - now.getTime());
+      const elapsedMs = Math.max(0, now.getTime() - startDate.getTime());
+      const totalSpan = endDate.getTime() - startDate.getTime();
+
+      const totalDays = remainingMs === 0 ? 0 : Math.ceil(remainingMs / 86400000);
+      const days = Math.floor(remainingMs / 86400000);
+      const hours = Math.floor((remainingMs % 86400000) / 3600000);
+      const minutes = Math.floor((remainingMs % 3600000) / 60000);
+      const seconds = Math.floor((remainingMs % 60000) / 1000);
+      const survivedDays = Math.min(99, Math.floor(elapsedMs / 86400000));
+      const progress = Math.min(100, Math.max(0, (elapsedMs / totalSpan) * 100));
+      const isFree = remainingMs === 0;
+      latestRemainingDays = totalDays;
+
+      if (lastDayShown !== totalDays) {
+        if (lastDayShown !== null) {
+          els.dayFlip.classList.remove("tick");
+          void els.dayFlip.offsetWidth;
+          els.dayFlip.classList.add("tick");
+          beep(880, 0.06, "triangle", 0.035);
+        }
+        els.days.textContent = totalDays;
+        els.titleDays.textContent = totalDays;
+        lastDayShown = totalDays;
+        document.title = isFree
+          ? "Tự do rồi — bye việc!"
+          : `${totalDays} ngày nữa, bye việc!`;
+      }
+
+      setTextTick(els.countDays, days);
+      setTextTick(els.hours, pad(hours));
+      setTextTick(els.minutes, pad(minutes));
+      if (setTextTick(els.seconds, pad(seconds)) && lastSeconds !== null) {
+        beep(520, 0.03, "square", 0.015);
+      }
+      lastSeconds = seconds;
+
+      els.survived.textContent = survivedDays;
+      els.progressPct.textContent = `${Math.round(progress)}%`;
+      els.progressBar.style.width = `${progress}%`;
+      els.progress.setAttribute("aria-valuenow", Math.round(progress));
+
+      applyMilestone(totalDays, isFree);
+    }
+
+    function nextQuote(fromSecret = false) {
+      const pool = fromSecret ? secretQuotes : quotes;
+      let next;
       do {
-        nextQuote = Math.floor(Math.random() * quotes.length);
-      } while (nextQuote === currentQuote);
-      currentQuote = nextQuote;
-      quoteElement.textContent = quotes[currentQuote];
-      createConfetti();
+        next = Math.floor(Math.random() * pool.length);
+      } while (!fromSecret && next === currentQuote && pool.length > 1);
+
+      if (!fromSecret) currentQuote = next;
+      const text = pool[next];
+
+      const apply = () => {
+        els.quote.textContent = text;
+        els.quote.classList.remove("swap");
+      };
+
+      if (reducedMotion) {
+        apply();
+      } else {
+        els.quote.classList.add("swap");
+        setTimeout(apply, 180);
+      }
+
+      createConfetti(els.quoteButton, fromSecret ? 30 : 18);
+      beep(fromSecret ? 740 : 620, 0.05, "square", 0.03);
+      return text;
+    }
+
+    function scheduleQuoteRotation() {
+      clearInterval(quoteTimer);
+      quoteTimer = setInterval(() => nextQuote(false), 28000);
+    }
+
+    function updateSoundUI() {
+      els.soundBtn.classList.toggle("on", soundOn);
+      els.soundBtn.setAttribute("aria-pressed", soundOn ? "true" : "false");
+      els.soundLabel.textContent = soundOn ? "Âm thanh: bật" : "Âm thanh: tắt";
+    }
+
+    function getShareText() {
+      if (latestRemainingDays <= 0) {
+        return "Bạn mình đã CHÍNH THỨC nghỉ việc. Tự do thật rồi 🫡 https://bachlong12623.github.io/daycount/";
+      }
+      return `Còn ${latestRemainingDays} ngày là bạn mình nghỉ việc 🫡 Theo dõi tại https://bachlong12623.github.io/daycount/`;
+    }
+
+    async function shareContent(text) {
+      const payload = { title: "Bye việc countdown", text, url: "https://bachlong12623.github.io/daycount/" };
+      try {
+        if (navigator.share) {
+          await navigator.share(payload);
+          showToast("Đã mở chia sẻ");
+          return;
+        }
+      } catch (err) {
+        if (err && err.name === "AbortError") return;
+      }
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Đã copy link + caption");
+      } catch {
+        showToast(text);
+      }
+    }
+
+    function loadChecks() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE.checks) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveChecks(done) {
+      localStorage.setItem(STORAGE.checks, JSON.stringify(done));
+    }
+
+    function renderChecklist() {
+      const done = new Set(loadChecks());
+      els.checklist.innerHTML = "";
+
+      checklistItems.forEach((text, index) => {
+        const li = document.createElement("li");
+        li.className = "check-item" + (done.has(index) ? " done" : "");
+        li.innerHTML = `<span class="check-box" aria-hidden="true">${done.has(index) ? "✓" : ""}</span><span class="check-text">${text}</span>`;
+        li.setAttribute("role", "checkbox");
+        li.setAttribute("aria-checked", done.has(index) ? "true" : "false");
+        li.tabIndex = 0;
+
+        const toggle = () => {
+          const current = new Set(loadChecks());
+          if (current.has(index)) current.delete(index);
+          else {
+            current.add(index);
+            beep(700, 0.05, "triangle", 0.03);
+            createConfetti(li, 10);
+          }
+          saveChecks([...current]);
+          renderChecklist();
+        };
+
+        li.addEventListener("click", toggle);
+        li.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggle();
+          }
+        });
+        els.checklist.appendChild(li);
+      });
+
+      const count = done.size;
+      els.checkProgress.textContent = `${count}/${checklistItems.length} việc đã xong` + (count === checklistItems.length ? " — pro quit level!" : "");
+    }
+
+    function applyMood(value) {
+      const n = Number(value);
+      els.moodNum.textContent = n;
+      const item = moodCopy.find((m) => n <= m.max) || moodCopy[moodCopy.length - 1];
+      els.moodEmoji.textContent = item.emoji;
+      els.moodMsg.textContent = item.msg;
+      localStorage.setItem(STORAGE.mood, String(n));
+    }
+
+    // Wire events
+    els.quoteButton.addEventListener("click", () => {
+      nextQuote(false);
+      scheduleQuoteRotation();
     });
 
+    els.shareQuoteBtn.addEventListener("click", () => {
+      shareContent(`"${els.quote.textContent}" — theo dõi countdown: https://bachlong12623.github.io/daycount/`);
+    });
+
+    els.shareBtn.addEventListener("click", () => shareContent(getShareText()));
+
+    els.soundBtn.addEventListener("click", () => {
+      soundOn = !soundOn;
+      localStorage.setItem(STORAGE.sound, soundOn ? "1" : "0");
+      updateSoundUI();
+      if (soundOn) {
+        ensureAudio();
+        beep(640, 0.07, "square", 0.035);
+        showToast("Đã bật tiếng tick dễ thương");
+      } else {
+        showToast("Đã tắt âm thanh");
+      }
+    });
+
+    els.brandBtn.addEventListener("click", () => {
+      nextQuote(true);
+      createConfetti(els.brandBtn, 26);
+      showToast("Easter egg: logo bye việc!");
+    });
+
+    const planeBoost = () => {
+      nextQuote(true);
+      createConfetti(els.plane, 28);
+      showToast("Máy bay giấy: đường bay tới tự do!");
+    };
+    els.plane.addEventListener("click", planeBoost);
+    els.plane.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        planeBoost();
+      }
+    });
+
+    els.moodSlider.addEventListener("input", (e) => applyMood(e.target.value));
+
+    // Init
+    updateSoundUI();
+    const savedMood = localStorage.getItem(STORAGE.mood);
+    if (savedMood !== null) els.moodSlider.value = savedMood;
+    applyMood(els.moodSlider.value);
+    renderChecklist();
     updateCountdown();
     setInterval(updateCountdown, 1000);
+    scheduleQuoteRotation();
   </script>
 </body>
 </html>
